@@ -1,32 +1,199 @@
-<div class="bg-white p-6 rounded-2xl shadow max-w-lg">
-    <h2 class="text-xl font-bold mb-4">Edit Mahasiswa</h2>
-    <form onsubmit="return validateForm()" action="/mahasiswa/update/<%= mhs.id %>" method="POST">
-        <input name="nama" value="<%= mhs.nama %>" class="w-full mb-3 p-2 border
-rounded" />
-        <input name="nim" value="<%= mhs.nim %>" class="w-full mb-3 p-2 border rounded" />
-        <div class="flex gap-3">
-            <button class="bg-yellow-500 text-white px-4 py-2 rounded">
-                Update
-            </button>
-            <!-- Tombol Kembali -->
-            <a href="/mahasiswa" class="bg-gray-400 text-white px-4 py-2 rounded">
-                Kembali
-            </a>
+<div class="p-6 md:p-8 bg-gray-100 min-h-screen">
+    
+    <div class="max-w-6xl mx-auto">
+
+        <% if (page === 'dashboard') { %>
+        <!-- ================= DASHBOARD ================= -->
+        
+        <h1 class="text-xl font-semibold text-gray-800 mb-6">Dashboard Bun MVC</h1>
+
+        <!-- CARD -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+            
+            <div class="bg-white p-5 rounded-xl border shadow-sm">
+                <p class="text-sm text-gray-500">Total Mahasiswa</p>
+                <p class="text-2xl font-bold text-blue-600 mt-1"><%= totalMahasiswa %></p>
+            </div>
+
+            <div class="bg-white p-5 rounded-xl border shadow-sm">
+                <p class="text-sm text-gray-500">Total Dosen</p>
+                <p class="text-2xl font-bold text-green-600 mt-1"><%= totalDosen %></p>
+            </div>
+
+            <div class="bg-white p-5 rounded-xl border shadow-sm">
+                <p class="text-sm text-gray-500">Total Matkul</p>
+                <p class="text-2xl font-bold text-purple-600 mt-1"><%= totalMatkul %></p>
+            </div>
+
         </div>
-    </form>
+
+        <!-- TABLE -->
+        <div class="bg-white rounded-xl border shadow-sm overflow-hidden">
+            
+            <div class="px-6 py-4 border-b">
+                <h3 class="font-semibold text-gray-700">Data Mahasiswa</h3>
+            </div>
+
+            <table class="w-full text-sm">
+                <thead class="bg-gray-100 text-gray-600">
+                    <tr>
+                        <th class="px-6 py-3 text-left">No</th>
+                        <th class="px-6 py-3 text-left">Nama</th>
+                        <th class="px-6 py-3 text-left">NIM</th>
+                    </tr>
+                </thead>
+
+                <tbody class="divide-y">
+                    <% mahasiswa.forEach((item, index) => { %>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-3 text-gray-500"><%= index + 1 %></td>
+                            <td class="px-6 py-3 font-medium text-gray-800"><%= item.nama %></td>
+                            <td class="px-6 py-3 text-gray-600"><%= item.nim %></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+
+        </div>
+
+        <% } else if (page === 'list') { %>
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
+
+            <div class="flex justify-between items-center mb-8 pb-4 border-b border-gray-50">
+                <h2 class="text-2xl font-bold text-gray-800">Data Mahasiswa</h2>
+
+                <a href="/mahasiswa"
+                   class="bg-blue-600 text-white px-6 py-2.5 rounded-xl text-sm font-bold hover:bg-blue-700 transition-all shadow-md shadow-blue-100 flex items-center gap-2">
+                   <span class="text-lg">+</span> Tambah Mahasiswa
+                </a>
+            </div>
+
+            <div class="overflow-hidden border border-gray-100 rounded-xl bg-gray-50/30">
+                <table class="w-full text-left">
+                    <thead class="bg-gray-50 text-gray-400 text-xs uppercase font-bold tracking-widest">
+                        <tr>
+                            <th class="px-6 py-4">No</th>
+                            <th class="px-6 py-4">Nama</th>
+                            <th class="px-6 py-4">NIM</th>
+                            <th class="px-6 py-4 text-center">Aksi</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="divide-y divide-gray-50 bg-white">
+                        <% mahasiswa.forEach((item, index) => { %>
+                            <tr class="hover:bg-blue-50/30 transition-all">
+                                <td class="px-6 py-5 text-sm text-gray-400"><%= index + 1 %></td>
+                                <td class="px-6 py-5 text-sm font-bold text-gray-800"><%= item.nama %></td>
+                                <td class="px-6 py-5 text-sm text-gray-600 font-mono bg-gray-50/50 rounded px-2"><%= item.nim %></td>
+                                <td class="px-6 py-5 text-center">
+                                    <div class="flex justify-center gap-4 text-sm font-bold">
+                                        <a href="/mahasiswa/edit/<%= item.id %>" 
+                                           class="text-yellow-500 hover:text-yellow-600 hover:underline">
+                                            Edit
+                                        </a>
+
+                                        <button onclick="konfirmasiHapus('<%= item.id %>', '<%= item.nama %>')" 
+                                            class="text-red-500 hover:text-red-600 hover:underline">
+                                            Hapus
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        <% }) %>
+
+                        <% if (mahasiswa.length === 0) { %>
+                            <tr>
+                                <td colspan="4" class="py-20 text-center text-gray-400 italic">
+                                    <div class="text-4xl mb-2">📁</div>
+                                    Belum ada data mahasiswa. Silakan tambah data baru.
+                                </td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        
+        <% } else if (page === 'create' || page === 'edit') { %>
+        <!-- ================= FORM ================= -->
+
+        <div class="flex justify-center mt-10">
+            <div class="bg-white p-6 rounded-xl border shadow-sm w-full max-w-md">
+
+                <h2 class="text-lg font-semibold text-gray-800 mb-6">
+                    <%= page === 'create' ? 'Tambah Mahasiswa' : 'Edit Mahasiswa' %>
+                </h2>
+
+                <form action="<%= page === 'create' ? '/mahasiswa' : '/mahasiswa/update/' + mhs.id %>" method="POST" class="space-y-4">
+                    
+                    <div>
+                        <label class="block text-sm text-gray-600 mb-1">Nama</label>
+                        <input type="text" name="nama"
+                            value="<%= typeof mhs !== 'undefined' ? mhs.nama : '' %>"
+                            class="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
+                            required>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm text-gray-600 mb-1">NIM</label>
+                        <input type="text" name="nim"
+                            value="<%= typeof mhs !== 'undefined' ? mhs.nim : '' %>"
+                            class="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none font-mono"
+                            required>
+                    </div>
+
+                    <div class="flex gap-3 pt-3">
+                        <button type="submit"
+                            class="bg-blue-600 text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700 transition">
+                            <%= page === 'create' ? 'Simpan' : 'Update' %>
+                        </button>
+
+                        <a href="/mahasiswa/list"
+                            class="bg-gray-200 text-gray-700 px-4 py-2 rounded-md text-sm hover:bg-gray-300 transition">
+                            Kembali
+                        </a>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+        <% } %>
+
+    </div>
 </div>
+
+<!-- SWEETALERT -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
-    function validateForm() {
-        const nama = document.querySelector('input[name="nama"]').value;
-        const nim = document.querySelector('input[name="nim"]').value;
-        if (!nama || !nim) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Nama dan NIM wajib diisi!',
-            });
-            return false;
-        }
-        return true;
+    const urlParams = new URLSearchParams(window.location.search);
+    const errorMsg = urlParams.get('error');
+
+    if (errorMsg) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal!',
+            text: errorMsg
+        });
+    }
+
+    function konfirmasiHapus(id, nama) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Yakin?',
+            text: 'Data akan dihapus permanen!',
+            showCancelButton: true,
+            confirmButtonColor: '#e3342f',
+            cancelButtonColor: '#6b7280',
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = `/mahasiswa/delete/${id}`;
+            }
+        });
     }
 </script>

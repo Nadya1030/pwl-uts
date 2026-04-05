@@ -1,0 +1,56 @@
+<div class="p-6 md:p-8 bg-gray-100 min-h-screen flex justify-center items-start">
+    
+    <div class="bg-white p-6 rounded-xl border shadow-sm w-full max-w-md">
+
+        <h2 class="text-lg font-semibold text-gray-800 mb-6">
+            Edit Mahasiswa
+        </h2>
+
+        <form action="/mahasiswa/update/<%= mhs.id %>" method="POST" onsubmit="return validateForm()" class="space-y-4">
+            
+            <div>
+                <label class="block text-sm text-gray-600 mb-1">Nama</label>
+                <input name="nama" value="<%= mhs.nama %>"
+                    class="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-yellow-500 outline-none" />
+            </div>
+
+            <div>
+                <label class="block text-sm text-gray-600 mb-1">NIM</label>
+                <input name="nim" value="<%= mhs.nim %>"
+                    class="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-yellow-500 outline-none font-mono" />
+            </div>
+
+            <div class="flex gap-3 pt-3">
+                <button type="submit"
+                    class="bg-yellow-500 text-white px-4 py-2 rounded-md text-sm hover:bg-yellow-600">
+                    Update
+                </button>
+
+                <a href="/mahasiswa/list"
+                    class="bg-gray-200 text-gray-700 px-4 py-2 rounded-md text-sm hover:bg-gray-300">
+                    Kembali
+                </a>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function validateForm() {
+        const nama = document.querySelector('input[name="nama"]').value;
+        const nim = document.querySelector('input[name="nim"]').value;
+
+        if (!nama || !nim) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Nama dan NIM wajib diisi!'
+            });
+            return false;
+        }
+        return true;
+    }
+</script>

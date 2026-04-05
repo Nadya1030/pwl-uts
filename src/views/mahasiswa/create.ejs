@@ -1,64 +1,50 @@
-<div class="bg-white p-6 rounded-2xl shadow max-w-lg">
-    <h2 class="text-xl font-bold mb-4">Tambah Mahasiswa</h2>
-    <form onsubmit="return validateForm()" action="/mahasiswa" method="POST">
-        <input name="nama" placeholder="Nama" class="w-full mb-3 p-2 border rounded" />
-        <input name="nim" placeholder="NIM" class="w-full mb-3 p-2 border rounded" />
-        <div class="flex gap-3">
-            <button class="bg-blue-500 text-white px-4 py-2 rounded">
-                Simpan
-            </button>
-            <!-- Tombol Kembali -->
-            <a href="/mahasiswa" class="bg-gray-400 text-white px-4 py-2 rounded">
-                Kembali
-            </a>
-        </div>
-    </form>
+<div class="p-6 md:p-8 bg-gray-100 min-h-screen flex justify-center items-start">
+    
+    <div class="bg-white p-6 rounded-xl border shadow-sm w-full max-w-md">
+
+        <h2 class="text-lg font-semibold text-gray-800 mb-6">
+            Tambah Mahasiswa
+        </h2>
+
+        <form action="/mahasiswa" method="POST" class="space-y-4">
+            
+            <div>
+                <label class="block text-sm text-gray-600 mb-1">Nama</label>
+                <input name="nama" required
+                    class="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none" />
+            </div>
+
+            <div>
+                <label class="block text-sm text-gray-600 mb-1">NIM</label>
+                <input name="nim" required
+                    class="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none font-mono" />
+            </div>
+
+            <div class="flex gap-3 pt-3">
+                <button type="submit"
+                    class="bg-blue-600 text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">
+                    Simpan
+                </button>
+
+                <a href="/mahasiswa/list"
+                    class="bg-gray-200 text-gray-700 px-4 py-2 rounded-md text-sm hover:bg-gray-300">
+                    Kembali
+                </a>
+            </div>
+
+        </form>
+
+    </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    function validateForm() {
-        const nama = document.querySelector('input[name="nama"]').value;
-        const nim = document.querySelector('input[name="nim"]').value;
-        if (!nama || !nim) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Nama dan NIM wajib diisi!',
-            });
-            return false;
-        }
-        return true;
-    }
-</script>
-3.edit.ejs
-<div class="bg-white p-6 rounded-2xl shadow max-w-lg">
-    <h2 class="text-xl font-bold mb-4">Edit Mahasiswa</h2>
-    <form onsubmit="return validateForm()" action="/mahasiswa/update/<%= mhs.id %>" method="POST">
-        <input name="nama" value="<%= mhs.nama %>" class="w-full mb-3 p-2 border
-rounded" />
-        <input name="nim" value="<%= mhs.nim %>" class="w-full mb-3 p-2 border rounded" />
-        <div class="flex gap-3">
-            <button class="bg-yellow-500 text-white px-4 py-2 rounded">
-                Update
-            </button>
-            <!-- Tombol Kembali -->
-            <a href="/mahasiswa" class="bg-gray-400 text-white px-4 py-2 rounded">
-                Kembali
-            </a>
-        </div>
-    </form>
-</div>
-<script>
-    function validateForm() {
-        const nama = document.querySelector('input[name="nama"]').value;
-        const nim = document.querySelector('input[name="nim"]').value;
-        if (!nama || !nim) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Nama dan NIM wajib diisi!',
-            });
-            return false;
-        }
-        return true;
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('error')) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal Simpan',
+            text: urlParams.get('error')
+        });
     }
 </script>

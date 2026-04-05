@@ -1,18 +1,17 @@
-import { Hono } from "hono";
-import router from "./routes/web";
-import { serveStatic } from "hono/bun";
-const app = new Hono();
+import { Hono } from 'hono';
+import { serveStatic } from 'hono/bun';
+import * as homeController from './controllers/homeController';
+import * as mahasiswaController from './controllers/mahasiswaController';
 
-// static file (CSS)
-app.use("/css/*", serveStatic({ root: "./src/public" }));
-// routes
-app.route("/", router);
-//midlware untuk set currentPath agar bisa digunakan di layout.ejs untuk active menu
-app.use("*", async (c, next) => {
-    c.set("currentPath", c.req.path);
-    await next();
-});
-export default {
-    port: 3000,
-    fetch: app.fetch,
-};
+const app = new Hono();
+app.use('/css/*', serveStatic({ root: './src/public' }));
+
+app.get('/', homeController.home); // Dashboard
+app.get('/mahasiswa/list', mahasiswaController.list); // Daftar Management
+app.get('/mahasiswa', mahasiswaController.index); // Form Tambah
+app.post('/mahasiswa', mahasiswaController.store); // Simpan
+app.get('/mahasiswa/edit/:id', mahasiswaController.editForm); // Form Edit
+app.post('/mahasiswa/update/:id', mahasiswaController.updateData); // Update
+app.get('/mahasiswa/delete/:id', mahasiswaController.destroy); // Hapus
+
+export default { port: 3000, fetch: app.fetch };

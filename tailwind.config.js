@@ -1,16 +1,12 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: [],
+export default {
+  content: [
+    "./src/views/**/*.ejs",      // Ini supaya Tailwind baca semua file EJS
+    "./src/public/**/*.html",
+    "./src/**/*.js"
+  ],
   theme: {
     extend: {},
   },
   plugins: [],
 }
-
-export default {
-content: ["./src/views/**/*.ejs"],
-theme: {
-extend: {},
-},
-plugins: [],
-};
